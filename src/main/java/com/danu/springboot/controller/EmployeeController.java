@@ -2,6 +2,8 @@ package com.danu.springboot.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +25,8 @@ import com.danu.springboot.repository.EmployeeRepository;
 @RequestMapping("api/v1/")
 public class EmployeeController {
 	
+	Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+	
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
@@ -32,12 +36,14 @@ public class EmployeeController {
 	 */
 	@GetMapping("/employees")
 	public List<Employee> getAllEmployees(){
+		logger.info("EmployeeController------inside getAllEmployees method");
 		return employeeRepository.findAll();
 	}
 	
 	// create employee rest api
 	@PostMapping("/employees")
 	public Employee createEmployee(@RequestBody Employee employee) {
+		logger.info("EmployeeController------inside createEmployee method");
 		return employeeRepository.save(employee);
 	}
 	
@@ -45,6 +51,7 @@ public class EmployeeController {
 	@GetMapping("/employees/{id}")
 	public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
 		
+		logger.info("EmployeeController------inside getEmployeeById method");
 		Employee employee = employeeRepository.findById(id).
 				orElseThrow(()-> new ResourceNotFoundException("Employee not exist with id: " + id));
 		return ResponseEntity.ok(employee);
@@ -54,6 +61,8 @@ public class EmployeeController {
 	@PutMapping("/employees/{id}")
 	public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, 
 													@RequestBody Employee employeeDetails){
+		
+		logger.info("EmployeeController------inside updateEmployee method");
 		Employee employee = employeeRepository.findById(id).
 				orElseThrow(()-> new ResourceNotFoundException("Employee not exist with id: " + id));
 		
